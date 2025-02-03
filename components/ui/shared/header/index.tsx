@@ -1,8 +1,9 @@
 import { APP_NAME } from "@/lib/constants";
-import { ShoppingCart, UserIcon } from "lucide-react";
+import { ShoppingCart} from "lucide-react";
 import Link from "next/link";
 import Logo from "../../logo";
 import { Button } from "../../button";
+import ToggleMode from "./toggle-mode";
 
 const Header = () => {
   return (
@@ -13,16 +14,16 @@ const Header = () => {
           <span className="hidden lg:block font-bold text-2xl">{APP_NAME}</span>
         </Link>
 
-        <div className="space-x-1">
-          <Button variant={"ghost"} >
+        <div className=" flex items-center space-x-1">
+          <ToggleMode />
+          <Button variant={"ghost"}>
             <Link href={"/cart"} className="flex items-center gap-1">
               <ShoppingCart className="h-6 w-6" />
               <span>Cart</span>
             </Link>
           </Button>
-          <Button variant={"ghost"} >
+          <Button variant={"default"}>
             <Link href={"/login"} className="flex items-center gap-1">
-              <UserIcon className="h-6 w-6" />
               <span>Login</span>
             </Link>
           </Button>
