@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-
+import Products from "@/components/ui/shared/products/products";
+import  data from '@/db/mock-products';
 export const metadata = {
   title: "Home",
 };
@@ -7,10 +7,9 @@ export const metadata = {
 const Home = async () => {
   return (
     <div>
-      <h1>Hello World</h1>
-      <Button variant={"default"} size={"lg"}>
-        Click me
-      </Button>
+      <Products data={data.products} title={"Lista de Produtos"} />
+
+
     </div>
   );
 };
