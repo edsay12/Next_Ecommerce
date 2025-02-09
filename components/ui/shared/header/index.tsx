@@ -3,7 +3,7 @@ import { ShoppingCart} from "lucide-react";
 import Link from "next/link";
 import Logo from "../../logo";
 import { Button } from "../../button";
-import ToggleMode from "./toggle-mode";
+import ToggleMode from "./components/toggle-mode";
 
 const Header = () => {
   return (

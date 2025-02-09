@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "next-themes";
-import { Button } from "../../button";
+import { Button } from "../../../button";
 import { Sun, Moon } from "lucide-react";
 
 const ToggleMode = () => {
