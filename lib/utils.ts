@@ -8,3 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 export function convertToPlainObject<T>(value: T): T {
   return JSON.parse(JSON.stringify(value));
 }
+
+export function convertNumberToDecimal(value: number): string {
+  const [int, decimal] = value.toString().split(".");
+  return decimal ? `${int}.${decimal}` : `${int}.00`;
+}
