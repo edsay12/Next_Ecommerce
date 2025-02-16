@@ -1,17 +1,10 @@
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 import Link from "next/link";
 import Image from "next/image";
-import { Star } from "lucide-react";
+
 import ProductPrice from "./product-price";
+import { convertToPlainObject } from "@/lib/utils";
 
 function ProductCard({ product }: { product: any }) {
   return (
@@ -33,11 +26,14 @@ function ProductCard({ product }: { product: any }) {
           <h2 className="text-sm font-bold">{product.name}</h2>
         </Link>
         <div className="flex items-center justify-between gap-2 text-sm">
-            {product.rating} Stars
-            {product.stock >0 ? <ProductPrice value={product.price}/> : <span className="text-destructive text-xs">Fora do estoque</span>}
+          {convertToPlainObject(product.rating)} Stars
+          {product.stock > 0 ? (
+            <ProductPrice value={product.price} />
+          ) : (
+            <span className="text-destructive text-xs">Fora do estoque</span>
+          )}
         </div>
       </CardContent>
-      
     </Card>
   );
 }
