@@ -1,14 +1,15 @@
 function ProductPrice({ value }: { value: number }) {
   const formatCurrency = (value: number) => {
-    return value.toLocaleString("pt-BR", {
+    const valor = typeof value === "number" ? value : Number(value);
+    return valor.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     });
   };
-
+  
   return (
     <span className="text-sm text-muted-foreground">
-      {formatCurrency(value)}
+      {formatCurrency(value) }
     </span>
   );
 }

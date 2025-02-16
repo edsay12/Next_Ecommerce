@@ -10,5 +10,6 @@ export const productSchema = z.object({
   images: z.array(z.string()).min(1,"Produto devem ter no mínimo 1 imagem"),
   isFeatured: z.boolean(),
   banner: z.string().optional(),
+  brand:z.string().min(3,"Marca deve ter no mínimo 3 caracteres"),
   price:z.string().refine((val)=>  /^\d+(\.\d{2})?/.test(convertNumberToDecimal(Number(val))),{message:"Preço deve conter duas casas decimais"}),
 });

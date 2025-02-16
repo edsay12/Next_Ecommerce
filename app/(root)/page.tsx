@@ -1,17 +1,16 @@
-import Products from "@/components/ui/shared/products/products";
 
 export const metadata = {
   title: "Home",
 };
+import ProductsList from "@/components/ui/shared/products/products-list";
 import { getLatestProducts } from "@/lib/actions/product.actions";
 
 const Home = async () => {
   const data = await getLatestProducts();
-  console.log(data)
 
   return (
     <div>
-      <Products data={data} title={"Lista de Produtos"} />
+      <ProductsList data={data} title={"Lista de Produtos"} />
     </div>
   );
 };

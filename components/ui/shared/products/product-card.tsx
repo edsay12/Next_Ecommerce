@@ -5,8 +5,9 @@ import Image from "next/image";
 
 import ProductPrice from "./product-price";
 import { convertToPlainObject } from "@/lib/utils";
+import { Product } from "@/@types";
 
-function ProductCard({ product }: { product: any }) {
+function ProductCard({ product }: { product: Product }) {
   return (
     <Card className="w-full max-w-sm">
       <CardHeader className="p-0 items-center">

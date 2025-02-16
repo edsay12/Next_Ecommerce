@@ -1,12 +1,12 @@
-import { product } from "@prisma/client";
-import ProductCard from "./components/product-card";
+import ProductCard from "./product-card";
+import { Product } from "@/@types";
 
-function Products({
+function ProductsList({
   data,
   title,
   limit = 4,
 }: {
-  data: any;
+  data: Product[];
   title?: string;
   limit?: number;
 }) {
@@ -16,7 +16,7 @@ function Products({
       <h2 className="text-2xl font-bold mb-8">{title}</h2>
       {data.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 ">
-          {limitedData.map((product:product) => (
+          {limitedData.map((product:Product) => (
             <ProductCard key={product.slug}  product={product}/>
           ))}
         </div>
@@ -29,4 +29,4 @@ function Products({
   );
 }
 
-export default Products;
+export default ProductsList;
