@@ -5,7 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
 }
 
@@ -15,19 +15,74 @@ datasource db {
 }
 
 model product {
-  id        String   @id @default(uuid())
-  name      String
-  slug    String @unique(map: "product_slug_unique")
-  category  String
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique(map: "product_slug_unique")
+  category    String
   description String
-  images    String[]
-  price     Decimal @default(0.0) @db.Decimal(12, 2)
-  brand     String 
-  rating    Decimal @default(0.0) @db.Decimal(3, 2)
-  numReviews Int @default(0)
-  stock     Int
-  isFeatured Boolean
-  banner    String?
+  images      String[]
+  price       Decimal  @default(0.0) @db.Decimal(12, 2)
+  brand       String
+  rating      Decimal  @default(0.0) @db.Decimal(3, 2)
+  numReviews  Int      @default(0)
+  stock       Int
+  isFeatured  Boolean
+  banner      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id            String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name          String?         @default("NO NAME")
+  email         String          @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  role          String          @default("user")
+  address       Json?            @db.Json
+  paymentMethod String?
+  accounts      Account[]
+  sessions      Session[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Account {
+  userId            String  @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String   @db.Uuid
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+

@@ -8,7 +8,7 @@ function ProductPrice({ value }: { value: number }) {
   };
   
   return (
-    <span className="text-sm text-muted-foreground">
+    <span className="text-sm text-muted-foreground text-black ">
       {formatCurrency(value) }
     </span>
   );
