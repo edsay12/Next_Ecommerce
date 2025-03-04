@@ -3,14 +3,14 @@ ALTER TABLE "product" ALTER COLUMN "numReviews" SET DEFAULT 0;
 
 -- CreateTable
 CREATE TABLE "User" (
-    "id" TEXT NOT NULL,
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
     "name" TEXT DEFAULT 'NO NAME',
     "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3),
     "image" TEXT,
     "password" TEXT,
     "role" TEXT NOT NULL DEFAULT 'user',
-    "address" JSON NOT NULL,
+    "address" JSON,
     "paymentMethod" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

@@ -8,6 +8,7 @@ import {
 import ToggleMode from "./toggle-mode";
 import Link from "next/link";
 import { EllipsisVertical, ShoppingCart } from "lucide-react";
+import UserButton from "./user-button";
 
 function Menu() {
   return (
@@ -20,11 +21,7 @@ function Menu() {
             <span>Cart</span>
           </Link>
         </Button>
-        <Button variant={"default"}>
-          <Link href={"/login"} className="flex items-center gap-1">
-            <span>Login</span>
-          </Link>
-        </Button>
+        <UserButton />
       </nav>
 
       <nav className="md:hidden flex">
@@ -42,11 +39,7 @@ function Menu() {
                 <span>Cart</span>
               </Link>
             </Button>
-            <Button variant={"default"}>
-              <Link href={"/login"} className="flex items-center gap-1">
-                <span>Login</span>
-              </Link>
-            </Button>
+            <UserButton />
           </SheetContent>
         </Sheet>
       </nav>

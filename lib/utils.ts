@@ -13,3 +13,22 @@ export function convertNumberToDecimal(value: number): string {
   const [int, decimal] = value.toString().split(".");
   return decimal ? `${int}.${decimal}` : `${int}.00`;
 }
+
+//Farmat Erros
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function formatError(error: any) {
+  if (error.name === "ZodError") {
+    const { issues } = error;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const errors = issues.map((issue: any) => issue.message);
+    return errors.join(", ");
+  } else if (
+    (error.name === "PrismaClientKnownRequestError", error.code === "P2002")
+  ) {
+    return "Ja tem uma conta com esse email";
+  } else {
+    return typeof error.message === "string"
+      ? error.message
+      : JSON.stringify(error.message);
+  }
+}
