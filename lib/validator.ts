@@ -1,6 +1,12 @@
 import { z } from "zod";
 import { convertNumberToDecimal } from "./utils";
 
+const currencySchema = z
+  .string()
+  .refine((val) => /^\d+(\.\d{2})?/.test(convertNumberToDecimal(Number(val))), {
+    message: "Preço deve conter duas casas decimais",
+  });
+
 export const productSchema = z.object({
   name: z.string().min(3, "Nome deve ter no mínimo 3 caracteres"),
   slug: z.string().min(3, "slug deve ter no mínimo 3 caracteres"),
@@ -11,12 +17,7 @@ export const productSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().optional(),
   brand: z.string().min(3, "Marca deve ter no mínimo 3 caracteres"),
-  price: z
-    .string()
-    .refine(
-      (val) => /^\d+(\.\d{2})?/.test(convertNumberToDecimal(Number(val))),
-      { message: "Preço deve conter duas casas decimais" }
-    ),
+  price: currencySchema,
 });
 
 export const SignInFormSchema = z.object({
@@ -53,3 +54,24 @@ export const SignUpFormSchema = z
     message: "Confirmação de senha não confere com a senha",
     path: ["confirmPassword"],
   });
+
+export const cartItemSchema = z.object({
+  productId: z.string().min(1, "Produto e requerido"),
+  name: z.string().min(1, "Nome e requerido"),
+  slug: z.string().min(1, "Slug e requerido"),
+  qtd: z.number().int().nonnegative(),
+  image: z.string().min(1, "Imagem e requerida"),
+  price: currencySchema,
+});
+
+export const cartSchema = z.object({
+  items: z.array(cartItemSchema),
+  itemsPrice: currencySchema,
+  totalPrice: currencySchema,
+  shipingPrice: currencySchema,
+  taxPrice: currencySchema,
+  sessionCartId: z
+    .string()
+    .min(1, "Id de sessão e requerido"),
+  userId: z.string().optional().nullable(),
+});
