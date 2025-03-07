@@ -1,11 +1,11 @@
 import NotFound from "@/app/not-found";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+
 import { Card, CardContent } from "@/components/ui/card";
+import AddToCart from "@/components/ui/shared/products/add-to-cart";
 import ProductImages from "@/components/ui/shared/products/product-images";
 import ProductPrice from "@/components/ui/shared/products/product-price";
 import { getProductBySlug } from "@/lib/actions/product.actions";
-import { Plus } from "lucide-react";
 
 async function Product({ params }: { params: { slug: string } }) {
   const product = await getProductBySlug(params.slug);
@@ -16,7 +16,6 @@ async function Product({ params }: { params: { slug: string } }) {
     <section className="grid grid-cols-1 gap-4 md:grid-cols-5 ">
       {/* images column */}
       <div className="col-span-2">
-
         <ProductImages images={product.images} />
       </div>
 
@@ -62,10 +61,16 @@ async function Product({ params }: { params: { slug: string } }) {
               </div>
               <div>
                 {product.stock > 0 && (
-                  <Button variant={"default"}>
-                    <Plus />
-                    Adicionar ao carrinho
-                  </Button>
+                  <AddToCart
+                    item={{
+                      productId: product.id,
+                      name: product.name,
+                      slug: product.slug,
+                      qtd: 1,
+                      image: product.images[0],
+                      price: product.price,
+                    }}
+                  />
                 )}
               </div>
             </div>

@@ -1,9 +1,10 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "./db/db";
+import prisma from "@/db/db";
 import { compareSync } from "bcrypt-ts-edge";
 import CredentialsProvider from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth";
+import { authConfig } from './auth.config';
 
 export const config = {
   pages: {
@@ -50,7 +51,6 @@ export const config = {
           };
         }
 
-        // if user doesn't exist or password is invalid, return null
         return null;
       },
     }),
@@ -61,8 +61,8 @@ export const config = {
       session.user.role = token.role;
       session.user.name = token.name;
 
-      console.log(token)
-      
+      console.log(token);
+
       if (trigger === "update") {
         session.user.name = user.name;
       }
@@ -85,13 +85,11 @@ export const config = {
               name: token.name,
             },
           });
-
         }
-        
-        return token;
       }
       return token;
     },
+    ...authConfig.callbacks
   },
 } satisfies NextAuthConfig;
 
