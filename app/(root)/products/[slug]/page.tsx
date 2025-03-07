@@ -6,9 +6,12 @@ import AddToCart from "@/components/ui/shared/products/add-to-cart";
 import ProductImages from "@/components/ui/shared/products/product-images";
 import ProductPrice from "@/components/ui/shared/products/product-price";
 import { getProductBySlug } from "@/lib/actions/product.actions";
+import {getCartItems} from "@/lib/actions/cart.actions";
 
 async function Product({ params }: { params: { slug: string } }) {
-  const product = await getProductBySlug(params.slug);
+  const product = await getProductBySlug(params.slug); 
+  const cartItems = await getCartItems();
+
 
   if (!product) return NotFound();
 
@@ -62,6 +65,7 @@ async function Product({ params }: { params: { slug: string } }) {
               <div>
                 {product.stock > 0 && (
                   <AddToCart
+                    cart={cartItems}
                     item={{
                       productId: product.id,
                       name: product.name,

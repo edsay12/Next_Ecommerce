@@ -7,6 +7,7 @@ import { CartItem } from "@/@types";
 import { cartItemSchema, cartSchema } from "../validator";
 import { revalidatePath } from "next/cache";
 
+
 // calcular o total do carrinho
 
 const calcPrice = (items: CartItem[]) => {
@@ -104,10 +105,6 @@ export const addToCart = async (CartItem: CartItem) => {
       };
     }
 
-    return {
-      success: true,
-      message: "tudo certinhi",
-    };
   } catch (error) {
     return {
       success: false,
