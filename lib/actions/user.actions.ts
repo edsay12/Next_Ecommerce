@@ -1,10 +1,15 @@
 "use server";
-import { SignInFormSchema, SignUpFormSchema } from "../validator";
-import { signIn, signOut } from "@/auth";
+import {
+  shippingSchema,
+  SignInFormSchema,
+  SignUpFormSchema,
+} from "../validator";
+import { auth, signIn, signOut } from "@/auth";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import prisma from "../../db/db";
 import { hashSync } from "bcrypt-ts-edge";
 import { formatError } from "../utils";
+import { PaymentMethod, ShipingAdress } from "@/@types";
 export async function signInWithCredentials(
   prevState: unknown,
   formData: FormData
@@ -63,3 +68,83 @@ export async function signUpWithCredentials(
     return { success: false, message: formatError(error) };
   }
 }
+
+export async function getUserById(userId: string) {
+  try {
+    return await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+  } catch (error) {
+    return null;
+  }
+}
+
+export const updateUserAdress = async (adress: ShipingAdress) => {
+  try {
+    const session = await auth();
+    const userId = session?.user.id ? (session.user.id as string) : undefined;
+
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!currentUser) throw new Error("usuário não encontrado");
+
+    const address = shippingSchema.parse(adress);
+
+    await prisma.user.update({
+      where: {
+        id: currentUser.id,
+      },
+      data: {
+        address: address,
+      },
+    });
+    return {
+      success: true,
+      message: "Endereço atualizado com sucesso",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+};
+
+export const updateUserPaymentMethod = async (paymentMethod: PaymentMethod) => {
+  try {
+    const session = await auth();
+    const userId = session?.user.id ? (session.user.id as string) : undefined;
+
+    const currentUser = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (!currentUser) throw new Error("usuário não encontrado");
+
+    await prisma.user.update({
+      where: {
+        id: currentUser.id,
+      },
+      data: {
+        paymentMethod: paymentMethod.type,
+      },
+    });
+    return {
+      success: true,
+      message: "Método de pagamento atualizado com sucesso",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+};

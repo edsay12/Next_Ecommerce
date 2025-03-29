@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { convertNumberToDecimal } from "./utils";
+import { PAYMENT_METHODS } from "./constants";
 
 const currencySchema = z
   .string()
@@ -70,8 +71,45 @@ export const cartSchema = z.object({
   totalPrice: currencySchema,
   shipingPrice: currencySchema,
   taxPrice: currencySchema,
-  sessionCartId: z
-    .string()
-    .min(1, "Id de sessão e requerido"),
+  sessionCartId: z.string().min(1, "Id de sessão e requerido"),
   userId: z.string().optional().nullable(),
+});
+
+export const shippingSchema = z.object({
+  fullName: z.string().min(3, "Nome deve ter no mínimo 3 caracteres"),
+  streetAddress: z.string().min(3, "Endereço deve ter no mínimo 3 caracteres"),
+  city: z.string().min(3, "Cidade deve ter no mínimo 3 caracteres"),
+  postalCode: z.string().min(3, "CEP deve ter no mínimo 3 caracteres"),
+  country: z.string().min(3, "País deve ter no mínimo 3 caracteres"),
+});
+
+export const paymentMethodSchema = z.object({
+  type: z
+    .string()
+    .min(3, "Tipo deve ter no mínimo 3 caracteres")
+    .refine((data) => PAYMENT_METHODS.includes(data), {
+      message: "Tipo de pagamento não suportado",
+    }),
+});
+
+
+export const InsertOrderSchema = z.object({
+  userId: z.string().min(1, "UserId e requerido"),
+  itemsPrice: currencySchema,
+  totalPrice: currencySchema,
+  shipingPrice: currencySchema,
+  taxPrice: currencySchema,
+  paymentMethod:z.string().refine((data) => PAYMENT_METHODS.includes(data), {
+    message: "Tipo de pagamento não suportado",
+  }),
+  shippingAddress: shippingSchema
+})
+
+export const InsertOrderItemSchema = z.object({
+  productId: z.string().min(1, "ProductId e requerido"),
+  qty: z.number().int().nonnegative(),
+  price: currencySchema,
+  name: z.string().min(3, "Nome e requerido"),
+  slug: z.string().min(3, "Slug e requerido"),
+  image: z.string().min(3, "Imagem e requerida"),
 });

@@ -139,7 +139,7 @@ export async function getCartItems() {
       shipingPrice: cart.shipingPrice,
       taxPrice: cart.taxPrice,
     });
-  } catch (error) {
+  } catch  {
     return null;
   }
 }
